@@ -18,25 +18,25 @@
     <div v-else class="dashboard-content">
       <!-- 统计卡片 -->
       <el-row :gutter="20" class="stats-row">
-        <el-col :xs="24" :sm="12" :md="6">
+        <el-col :xs="12" :sm="12" :md="6">
           <div class="stat-card income">
             <div class="stat-value">{{ formatCurrency(totalIncome) }}</div>
             <div class="stat-label">总收入</div>
           </div>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="6">
+        <el-col :xs="12" :sm="12" :md="6">
           <div class="stat-card expense">
             <div class="stat-value">{{ formatCurrency(totalExpense) }}</div>
             <div class="stat-label">总支出</div>
           </div>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="6">
+        <el-col :xs="12" :sm="12" :md="6">
           <div class="stat-card balance">
             <div class="stat-value">{{ formatCurrency(netBalance) }}</div>
             <div class="stat-label">净余额</div>
           </div>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="6">
+        <el-col :xs="12" :sm="12" :md="6">
           <div class="stat-card accountnum" >
             <div class="stat-value">{{ accountCount }}</div>
             <div class="stat-label">账户数量</div>
@@ -50,7 +50,7 @@
           <div class="card">
             <div class="card-header">
               <h3>财务概览</h3>
-              <el-button type="primary" @click="loadData" :loading="loading">
+              <el-button type="primary" @click="loadData" :loading="loading" icon="refresh" > 
                 刷新数据
               </el-button>
             </div>
