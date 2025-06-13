@@ -4,7 +4,9 @@
       <div class="card-header">
         <h3>交易记录</h3>
         <el-button type="primary" @click="showCreateDialog = true">
-          <el-icon><Plus /></el-icon>
+          <el-icon>
+            <Plus />
+          </el-icon>
           新增交易
         </el-button>
       </div>
@@ -12,47 +14,28 @@
       <!-- 筛选和搜索 -->
       <div class="filter-section">
         <el-row :gutter="20">
-          <el-col :span="6">
-            <el-date-picker
-              v-model="dateRange"
-              type="daterange"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-              format="YYYY-MM-DD"
-              value-format="YYYY-MM-DD"
-              @change="handleDateFilter"
-            />
+          <el-col :xs="24" :sm="12" :md="6">
+            <el-date-picker v-model="dateRange" type="daterange" range-separator="至" start-placeholder="开始日期"
+              end-placeholder="结束日期" format="YYYY-MM-DD" value-format="YYYY-MM-DD" @change="handleDateFilter"
+              style="width: 100%" />
           </el-col>
-          <el-col :span="6">
-            <el-input
-              v-model="searchText"
-              placeholder="搜索交易描述"
-              clearable
-              @input="handleSearch"
-            >
+          <el-col :xs="24" :sm="12" :md="6">
+            <el-input v-model="searchText" placeholder="搜索交易描述" clearable @input="handleSearch" style="width: 100%">
               <template #prefix>
-                <el-icon><Search /></el-icon>
+                <el-icon>
+                  <Search />
+                </el-icon>
               </template>
             </el-input>
           </el-col>
-          <el-col :span="6">
-            <el-select
-              v-model="filterAccount"
-              placeholder="筛选账户"
-              clearable
-              @change="handleAccountFilter"
-            >
-              <el-option
-                v-for="account in accounts"
-                :key="account.id"
-                :label="account.name"
-                :value="account.id"
-              />
+          <el-col :xs="24" :sm="12" :md="6">
+            <el-select v-model="filterAccount" placeholder="筛选账户" clearable @change="handleAccountFilter"
+              style="width: 100%">
+              <el-option v-for="account in accounts" :key="account.id" :label="account.name" :value="account.id" />
             </el-select>
           </el-col>
-          <el-col :span="6">
-            <el-button @click="resetFilters">重置筛选</el-button>
+          <el-col :xs="24" :sm="24" :md="6">
+            <el-button @click="resetFilters" style="width: 50%;margin-left: 30%;">重置筛选</el-button>
           </el-col>
         </el-row>
       </div>
@@ -80,12 +63,7 @@
       </el-row>
 
       <!-- 交易表格 -->
-      <el-table 
-        :data="paginatedTransactions" 
-        v-loading="loading"
-        stripe
-        style="width: 100%"
-      >
+      <el-table :data="paginatedTransactions" v-loading="loading" stripe style="width: 100%">
         <el-table-column prop="date" label="日期" width="100" sortable />
         <el-table-column prop="id" label="交易ID" width="120" />
         <el-table-column prop="description" label="描述" min-width="200" />
@@ -112,10 +90,7 @@
             <el-button type="info" size="small" @click="viewTransactionDetail(row)">
               详情
             </el-button>
-            <el-popconfirm
-              title="确定要删除这笔交易吗？"
-              @confirm="deleteTransaction(row.id)"
-            >
+            <el-popconfirm title="确定要删除这笔交易吗？" @confirm="deleteTransaction(row.id)">
               <template #reference>
                 <el-button type="danger" size="small">删除</el-button>
               </template>
@@ -126,83 +101,40 @@
 
       <!-- 分页 -->
       <div class="pagination-container">
-        <el-pagination
-          v-model:current-page="currentPage"
-          v-model:page-size="pageSize"
-          :page-sizes="[10, 20, 50, 100]"
-          :total="filteredTransactions.length"
-          layout="total, sizes, prev, pager, next, jumper"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        />
+        <el-pagination v-model:current-page="currentPage" v-model:page-size="pageSize" :page-sizes="[10, 20, 50, 100]"
+          :total="filteredTransactions.length" layout="total, sizes, prev, pager, next, jumper"
+          @size-change="handleSizeChange" @current-change="handleCurrentChange" />
       </div>
     </div>
 
     <!-- 新增/编辑交易对话框 -->
-    <el-dialog
-      v-model="showCreateDialog"
-      :title="editingTransaction ? '编辑交易' : '新增交易'"
-      width="600px"
-    >
-      <el-form
-        ref="transactionFormRef"
-        :model="transactionForm"
-        :rules="transactionRules"
-        label-width="100px"
-      >
+    <el-dialog v-model="showCreateDialog" :title="editingTransaction ? '编辑交易' : '新增交易'" width="600px">
+      <el-form ref="transactionFormRef" :model="transactionForm" :rules="transactionRules" label-width="100px">
         <el-form-item label="交易ID" prop="id">
-          <el-input 
-            v-model="transactionForm.id" 
-            :disabled="!!editingTransaction"
-            placeholder="请输入交易ID"
-          />
+          <el-input v-model="transactionForm.id" :disabled="!!editingTransaction" placeholder="请输入交易ID" />
         </el-form-item>
         <el-form-item label="交易日期" prop="date">
-          <el-date-picker
-            v-model="transactionForm.date"
-            type="date"
-            placeholder="选择日期"
-            format="YYYY-MM-DD"
-            value-format="YYYY-MM-DD"
-            style="width: 100%"
-          />
+          <el-date-picker v-model="transactionForm.date" type="date" placeholder="选择日期" format="YYYY-MM-DD"
+            value-format="YYYY-MM-DD" style="width: 100%" />
         </el-form-item>
         <el-form-item label="交易描述" prop="description">
-          <el-input 
-            v-model="transactionForm.description" 
-            placeholder="请输入交易描述"
-            type="textarea"
-            :rows="2"
-          />
+          <el-input v-model="transactionForm.description" placeholder="请输入交易描述" type="textarea" :rows="2" />
         </el-form-item>
         <el-form-item label="借方账户" prop="debit_account_id">
           <el-select v-model="transactionForm.debit_account_id" placeholder="选择借方账户" style="width: 100%">
-            <el-option
-              v-for="account in accounts"
-              :key="account.id"
-              :label="`${account.name} (${account.id})`"
-              :value="account.id"
-            />
+            <el-option v-for="account in accounts" :key="account.id" :label="`${account.name} (${account.id})`"
+              :value="account.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="贷方账户" prop="credit_account_id">
           <el-select v-model="transactionForm.credit_account_id" placeholder="选择贷方账户" style="width: 100%">
-            <el-option
-              v-for="account in accounts"
-              :key="account.id"
-              :label="`${account.name} (${account.id})`"
-              :value="account.id"
-            />
+            <el-option v-for="account in accounts" :key="account.id" :label="`${account.name} (${account.id})`"
+              :value="account.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="交易金额" prop="amount">
-          <el-input-number
-            v-model="transactionForm.amount"
-            :precision="2"
-            :min="0.01"
-            style="width: 100%"
-            placeholder="请输入交易金额"
-          />
+          <el-input-number v-model="transactionForm.amount" :precision="2" :min="0.01" style="width: 100%"
+            placeholder="请输入交易金额" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -214,11 +146,7 @@
     </el-dialog>
 
     <!-- 交易详情对话框 -->
-    <el-dialog
-      v-model="showDetailDialog"
-      title="交易详情"
-      width="500px"
-    >
+    <el-dialog v-model="showDetailDialog" title="交易详情" width="500px">
       <div v-if="selectedTransaction" class="transaction-detail">
         <el-descriptions :column="1" border>
           <el-descriptions-item label="交易ID">
@@ -296,7 +224,7 @@ const filteredTransactions = computed(() => {
 
   // 日期筛选
   if (dateRange.value && dateRange.value.length === 2) {
-    result = result.filter(t => 
+    result = result.filter(t =>
       t.date >= dateRange.value[0] && t.date <= dateRange.value[1]
     )
   }
@@ -304,7 +232,7 @@ const filteredTransactions = computed(() => {
   // 文本搜索
   if (searchText.value) {
     const search = searchText.value.toLowerCase()
-    result = result.filter(t => 
+    result = result.filter(t =>
       t.description.toLowerCase().includes(search) ||
       t.id.toLowerCase().includes(search)
     )
@@ -312,7 +240,7 @@ const filteredTransactions = computed(() => {
 
   // 账户筛选
   if (filterAccount.value) {
-    result = result.filter(t => 
+    result = result.filter(t =>
       t.debit_account_id === filterAccount.value ||
       t.credit_account_id === filterAccount.value
     )
@@ -384,7 +312,7 @@ const deleteTransaction = async (transactionId) => {
 const saveTransaction = async () => {
   try {
     await transactionFormRef.value.validate()
-    
+
     if (editingTransaction.value) {
       await api.updateTransaction(editingTransaction.value.id, transactionForm.value)
       ElMessage.success('更新成功')
@@ -392,7 +320,7 @@ const saveTransaction = async () => {
       await api.createTransaction(transactionForm.value)
       ElMessage.success('创建成功')
     }
-    
+
     showCreateDialog.value = false
     loadData()
   } catch (error) {
